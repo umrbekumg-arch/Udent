@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UDent App</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00d4ff">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #00d4ff;
+            --secondary: #0099ff;
+            --bg: #0a192f;
+            --surface: #1e293b;
+            --accent: #10b981;
+            --danger: #ff4757;
+            --text: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(10, 25, 47, 0.95);
+            padding: 20px;
+            border-bottom: 3px solid var(--primary);
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .app-name {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Container */
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Search */
+        .search-box {
+            width: 100%;
+            padding: 18px 20px 18px 50px;
+            margin: 25px 0;
+            border-radius: 15px;
+            border: 2px solid rgba(0,212,255,0.2);
+            background: rgba(255,255,255,0.08);
+            color: white;
+            font-size: 17px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2300d4ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 15px center;
+            background-size: 24px;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0,212,255,0.2);
+        }
+
+        /* Patient Card */
+        .patient-card {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border-radius: 18px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .patient-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,212,255,0.15);
+        }
+
+        .patient-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .patient-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        .payment-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .total-paid {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .debt {
+            background: linear-gradient(135deg, #ff4757, #ff6b81);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        /* FAB Button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 15px 35px rgba(0,212,255,0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .fab:hover {
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        /* Form Container */
+        .form-container {
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .form-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px;
+            margin: 12px 0;
+            border-radius: 12px;
+            border: 2px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.08);
+            color: white;
+            font-size: 16px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255,255,255,0.12);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 18px;
+            margin: 20px 0;
+            border-radius: 15px;
+            border: none;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,212,255,0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #ff6b81);
+        }
+
+        /* Back Button */
+        .back-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Page Management */
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Dental Section */
+        .dental-container {
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 25px 0;
+            border: 1px solid rgba(0,212,255,0.2);
+        }
+
+        .jaw-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 20px 0;
+            color: var(--primary);
+        }
+
+        .teeth-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .tooth {
+            background: rgba(255,255,255,0.1);
+            padding: 15px 5px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tooth:hover {
+            background: rgba(0,212,255,0.3);
+            transform: scale(1.1);
+        }
+
+        .tooth-num {
+            font-size: 14px;
+            font-weight: bold;
+            color: #94a3b8;
+        }
+
+        .tooth-svg {
+            width: 100%;
+            height: 40px;
+            margin: 5px 0;
+        }
+
+        .history-item {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        /* Loading */
+        .loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 25, 47, 0.95);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(0,212,255,0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .patient-card {
+                padding: 15px;
+            }
+            
+            .fab {
+                width: 60px;
+                height: 60px;
+                font-size: 26px;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .teeth-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+        <div style="font-size: 18px; font-weight: 600; color: var(--primary);">
+            UDent yuklanmoqda...
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="app-name">
+            <i class="fas fa-tooth"></i>
+            <span>UDent</span>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Home Page -->
+        <div id="homePage" class="page active">
+            <input type="text" class="search-box" placeholder="Mijozni izlash..." 
+                   oninput="searchPatients(this.value)">
+            
+            <div id="patientsList">
+                <!-- Patients will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Add Patient Page -->
+        <div id="addPage" class="page">
+            <button class="back-btn" onclick="showPage('homePage')">
+                <i class="fas fa-arrow-left"></i> Orqaga
+            </button>
+            
+            <div class="form-container">
+                <div class="form-title">
+                    <i class="fas fa-user-plus"></i>
+                    Yangi Bemor Qo'shish
+                </div>
+                
+                <input type="text" class="form-input" id="famInput" placeholder="Familyasi">
+                <input type="text" class="form-input" id="ismInput" placeholder="Ismi">
+                <input type="tel" class="form-input" id="telInput" placeholder="Telefon raqami">
+                
+                <button class="btn" onclick="addPatient()">
+                    <i class="fas fa-user-check"></i>
+                    Ro'yxatga Qo'shish
+                </button>
+            </div>
+        </div>
+
+        <!-- Patient Detail Page -->
+        <div id="patientPage" class="page">
+            <button class="back-btn" onclick="showPage('homePage')">
+                <i class="fas fa-arrow-left"></i> Orqaga
+            </button>
+            
+            <div id="patientDetails">
+                <!-- Patient details will be loaded here -->
+            </div>
+            
+            <div style="display: flex; gap: 15px; margin-top: 25px;">
+                <button class="btn" onclick="showTreatment()">
+                    <i class="fas fa-teeth"></i>
+                    Muolaja Qilish
+                </button>
+                <button class="btn btn-danger" onclick="deletePatient()">
+                    <i class="fas fa-trash"></i>
+                    O'chirish
+                </button>
+            </div>
+        </div>
+
+        <!-- Treatment Page -->
+        <div id="treatmentPage" class="page">
+            <button class="back-btn" onclick="showPage('patientPage')">
+                <i class="fas fa-arrow-left"></i> Orqaga
+            </button>
+            
+            <div class="dental-container">
+                <div class="form-title" style="text-align: center;">
+                    <i class="fas fa-tooth"></i>
+                    Tishlar Holati
+                </div>
+                
+                <div class="jaw-title">Yuqori Jag'</div>
+                <div class="teeth-grid" id="upperTeeth">
+                    <!-- Upper teeth will be generated here -->
+                </div>
+                
+                <div class="jaw-title">Quyi Jag'</div>
+                <div class="teeth-grid" id="lowerTeeth">
+                    <!-- Lower teeth will be generated here -->
+                </div>
+            </div>
+            
+            <div class="form-container">
+                <div class="form-title">
+                    <i class="fas fa-file-medical"></i>
+                    Yangi Muolaja
+                </div>
+                
+                <input type="number" class="form-input" id="paymentInput" placeholder="To'lov miqdori (so'm)">
+                <textarea class="form-input" id="workInput" rows="4" placeholder="Bajarilgan ishlar..."></textarea>
+                <input type="number" class="form-input" id="debtInput" placeholder="Qolgan qarz (so'm)">
+                
+                <button class="btn" onclick="saveTreatment()">
+                    <i class="fas fa-save"></i>
+                    Saqlash
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAB Button -->
+    <button class="fab" onclick="showPage('addPage')" id="fabBtn">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <script>
+        // ====== APP DATA ======
+        let patients = JSON.parse(localStorage.getItem('UDentPatients')) || [];
+        let currentPatientIndex = null;
+        
+        // ====== INITIAL LOAD ======
+        window.addEventListener('load', function() {
+            hideLoader();
+            renderPatients();
+            
+            // Initialize teeth
+            initializeTeeth();
+        });
+        
+        function showLoader() {
+            document.getElementById('loader').style.display = 'flex';
+        }
+        
+        function hideLoader() {
+            document.getElementById('loader').style.display = 'none';
+        }
+        
+        // ====== PAGE NAVIGATION ======
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Show/hide FAB button
+            document.getElementById('fabBtn').style.display = 
+                (pageId === 'homePage') ? 'flex' : 'none';
+            
+            // Refresh data if needed
+            if (pageId === 'homePage') {
+                renderPatients();
+            }
+        }
+        
+        // ====== PATIENT MANAGEMENT ======
+        function renderPatients(search = '') {
+            const listDiv = document.getElementById('patientsList');
+            listDiv.innerHTML = '';
+            
+            let filtered = patients;
+            if (search) {
+                const searchTerm = search.toLowerCase();
+                filtered = patients.filter(p => 
+                    p.fam.toLowerCase().includes(searchTerm) ||
+                    p.ism.toLowerCase().includes(searchTerm) ||
+                    (p.tel && p.tel.includes(search))
+                );
+            }
+            
+            if (filtered.length === 0) {
+                listDiv.innerHTML = `
+                    <div style="text-align: center; padding: 50px 20px; color: rgba(255,255,255,0.5);">
+                        <i class="fas fa-users-slash" style="font-size: 60px; margin-bottom: 20px;"></i>
+                        <div style="font-size: 18px;">Hech qanday bemor topilmadi</div>
+                        <div style="font-size: 14px; margin-top: 10px;">Yangi bemor qo'shish uchun + tugmasini bosing</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            filtered.forEach((patient, index) => {
+                const totalPaid = patient.payments ? 
+                    patient.payments.reduce((sum, p) => sum + (p.amount || 0), 0) : 0;
+                const debt = patient.debt || 0;
+                
+                const card = document.createElement('div');
+                card.className = 'patient-card';
+                card.onclick = () => openPatient(index);
+                
+                card.innerHTML = `
+                    <div class="patient-name">${patient.fam} ${patient.ism}</div>
+                    <div class="patient-info">
+                        <i class="fas fa-phone"></i>
+                        <span>${patient.tel || 'Telefon kiritilmagan'}</span>
+                    </div>
+                    <div class="payment-info">
+                        <div class="total-paid">
+                            <i class="fas fa-coins"></i>
+                            ${totalPaid.toLocaleString()} so'm
+                        </div>
+                        ${debt > 0 ? `
+                            <div class="debt">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                ${debt.toLocaleString()} so'm
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                
+                listDiv.appendChild(card);
+            });
+        }
+        
+        function searchPatients(value) {
+            renderPatients(value);
+        }
+        
+        function addPatient() {
+            const fam = document.getElementById('famInput').value.trim();
+            const ism = document.getElementById('ismInput').value.trim();
+            const tel = document.getElementById('telInput').value.trim();
+            
+            if (!fam || !ism) {
+                alert('Iltimos, familya va ismni kiriting!');
+                return;
+            }
+            
+            const newPatient = {
+                id: Date.now(),
+                fam: fam,
+                ism: ism,
+                tel: tel,
+                payments: [],
+                treatments: [],
+                dentalData: {},
+                debt: 0,
+                lastVisit: new Date().toLocaleDateString('uz-UZ'),
+                createdAt: new Date().toISOString()
+            };
+            
+            patients.unshift(newPatient);
+            savePatients();
+            
+            // Clear form
+            document.getElementById('famInput').value = '';
+            document.getElementById('ismInput').value = '';
+            document.getElementById('telInput').value = '';
+            
+            showPage('homePage');
+        }
+        
+        function openPatient(index) {
+            currentPatientIndex = index;
+            const patient = patients[index];
+            
+            const totalPaid = patient.payments ? 
+                patient.payments.reduce((sum, p) => sum + (p.amount || 0), 0) : 0;
+            const debt = patient.debt || 0;
+            
+            document.getElementById('patientDetails').innerHTML = `
+                <div class="form-container">
+                    <div style="text-align: center;">
+                        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+                            border-radius: 20px; display: flex; align-items: center; justify-content: center; 
+                            margin: 0 auto 20px; font-size: 36px; color: white;">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <h2 style="margin: 0 0 10px 0;">${patient.fam} ${patient.ism}</h2>
+                        <p style="color: var(--primary); font-size: 18px;">
+                            <i class="fas fa-phone"></i> ${patient.tel || 'Telefon kiritilmagan'}
+                        </p>
+                        
+                        <div style="display: flex; justify-content: center; gap: 30px; margin: 30px 0;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 28px; font-weight: 800; color: var(--accent);">
+                                    ${totalPaid.toLocaleString()}
+                                </div>
+                                <div style="font-size: 14px; opacity: 0.8;">To'langan</div>
+                            </div>
+                            <div style="width: 1px; background: rgba(255,255,255,0.2);"></div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 28px; font-weight: 800; color: ${debt > 0 ? 'var(--danger)' : 'var(--accent)'}">
+                                    ${debt.toLocaleString()}
+                                </div>
+                                <div style="font-size: 14px; opacity: 0.8;">Qarz</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px 0; color: var(--primary);">
+                        <i class="fas fa-history"></i> So'nggi To'lovlar
+                    </h3>
+                    
+                    ${patient.payments && patient.payments.length > 0 ? 
+                        patient.payments.slice(0, 5).map(payment => `
+                            <div class="history-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <strong style="color: var(--accent);">
+                                        ${payment.amount.toLocaleString()} so'm
+                                    </strong>
+                                    <small style="opacity: 0.6;">${payment.date || ''}</small>
+                                </div>
+                                <div>${payment.description || 'To\'lov'}</div>
+                            </div>
+                        `).join('') : 
+                        `<div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.5);">
+                            <i class="fas fa-file-invoice-dollar" style="font-size: 48px;"></i>
+                            <div style="margin-top: 15px;">To'lovlar mavjud emas</div>
+                        </div>`
+                    }
+                    
+                    ${debt > 0 ? `
+                        <div style="margin-top: 30px; padding: 20px; background: linear-gradient(90deg, rgba(255,71,87,0.1), transparent); 
+                            border-radius: 15px; border-left: 6px solid var(--danger);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-size: 14px; opacity: 0.7;">QOLGAN QARZ</div>
+                                    <div style="font-size: 36px; font-weight: 800; color: var(--danger);">
+                                        ${debt.toLocaleString()} so'm
+                                    </div>
+                                </div>
+                                <i class="fas fa-exclamation-triangle" style="font-size: 40px; color: var(--danger); opacity: 0.5;"></i>
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            showPage('patientPage');
+        }
+        
+        function deletePatient() {
+            if (!confirm(`"${patients[currentPatientIndex].fam} ${patients[currentPatientIndex].ism}" bemorni o'chirishni istaysizmi?`)) {
+                return;
+            }
+            
+            patients.splice(currentPatientIndex, 1);
+            savePatients();
+            showPage('homePage');
+        }
+        
+        // ====== TREATMENT MANAGEMENT ======
+        function showTreatment() {
+            showPage('treatmentPage');
+            updateTeethDisplay();
+        }
+        
+        function saveTreatment() {
+            const patient = patients[currentPatientIndex];
+            
+            const payment = document.getElementById('paymentInput').value;
+            const work = document.getElementById('workInput').value;
+            const debt = document.getElementById('debtInput').value;
+            
+            const today = new Date().toLocaleDateString('uz-UZ');
+            
+            if (payment) {
+                if (!patient.payments) patient.payments = [];
+                patient.payments.unshift({
+                    amount: parseInt(payment),
+                    date: today,
+                    description: work || 'To\'lov'
+                });
+            }
+            
+            if (work) {
+                if (!patient.treatments) patient.treatments = [];
+                patient.treatments.unshift({
+                    work: work,
+                    date: today,
+                    amount: payment ? parseInt(payment) : null
+                });
+            }
+            
+            if (debt) {
+                patient.debt = parseInt(debt);
+            }
+            
+            patient.lastVisit = today;
+            savePatients();
+            
+            // Clear form
+            document.getElementById('paymentInput').value = '';
+            document.getElementById('workInput').value = '';
+            document.getElementById('debtInput').value = '';
+            
+            // Go back to patient page
+            openPatient(currentPatientIndex);
+        }
+        
+        // ====== DENTAL SECTION ======
+        function initializeTeeth() {
+            const upperNumbers = [18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28];
+            const lowerNumbers = [48,47,46,45,44,43,42,41,31,32,33,34,35,36,37,38];
+            
+            renderTeethGrid('upperTeeth', upperNumbers, false);
+            renderTeethGrid('lowerTeeth', lowerNumbers, true);
+        }
+        
+        function renderTeethGrid(elementId, teethNumbers, isLower) {
+            const container = document.getElementById(elementId);
+            container.innerHTML = '';
+            
+            teethNumbers.forEach(num => {
+                const toothDiv = document.createElement('div');
+                toothDiv.className = 'tooth';
+                toothDiv.onclick = () => selectTooth(num);
+                
+                toothDiv.innerHTML = `
+                    <div class="tooth-num">${num}</div>
+                    <svg class="tooth-svg" viewBox="0 0 50 90">
+                        <path d="M10,10 Q10,5 25,5 Q40,5 40,10 L38,75 Q25,85 12,75 Z" 
+                              fill="#cbd5e1" stroke="#475569" stroke-width="1.5" />
+                    </svg>
+                `;
+                
+                container.appendChild(toothDiv);
+            });
+        }
+        
+        function selectTooth(toothNumber) {
+            alert(`Tish №${toothNumber} tanlandi. Bu funksiya keyingi versiyada qo'shiladi.`);
+            // Bu yerda tish holatini o'zgartirish funksiyasi bo'ladi
+        }
+        
+        function updateTeethDisplay() {
+            // Dental ma'lumotlarni yangilash
+            // Hozircha oddiy holatda
+        }
+        
+        // ====== DATA STORAGE ======
+        function savePatients() {
+            localStorage.setItem('UDentPatients', JSON.stringify(patients));
+        }
+        
+        // ====== PWA INSTALL PROMPT ======
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install button after 5 seconds
+            setTimeout(() => {
+                if (deferredPrompt && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                    if (confirm('UDent ilovasini mobilga o\'rnatishni xohlaysizmi?')) {
+                        installApp();
+                    }
+                }
+            }, 5000);
+        });
+        
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted install');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
+        
+        // ====== OFFLINE DETECTION ======
+        window.addEventListener('online', () => {
+            console.log('Internetga ulandi');
+        });
+        
+        window.addEventListener('offline', () => {
+            console.log('Internet uzildi. Oflayn rejimda ishlayapsiz.');
+        });
+    </script>
+</body>
+</html>
