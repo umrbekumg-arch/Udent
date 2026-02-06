@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UDent | Dental Clinic Management</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0a192f, #1a365d);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .logo {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #00d4ff;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00d4ff, #0099ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.8;
+            margin-bottom: 40px;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            margin: 15px 0;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,212,255,0.3);
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 40px 0;
+        }
+        .feature {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .feature i {
+            font-size: 30px;
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+        .instructions {
+            background: rgba(0,0,0,0.3);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            text-align: left;
+        }
+        .step {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .step-num {
+            width: 40px;
+            height: 40px;
+            background: #00d4ff;
+            color: black;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <i class="fas fa-tooth"></i>
+        </div>
+        
+        <h1>UDent Dental Clinic</h1>
+        <div class="subtitle">Professional Dental Management System</div>
+        
+        <a href="app.html" class="btn">
+            <i class="fas fa-play"></i> Ilovani Ochish
+        </a>
+        
+        <div class="features">
+            <div class="feature">
+                <i class="fas fa-users"></i>
+                <h3>Bemor Boshqaruv</h3>
+                <p>Barcha bemorlarni bitta joyda</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-money-bill-wave"></i>
+                <h3>To'lovlar</h3>
+                <p>To'lov va qarzlar hisobi</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-tooth"></i>
+                <h3>Tish Formulasi</h3>
+                <p>Anatomik tish formulasi</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>Mobil Dastur</h3>
+                <p>Telefonda ishlaydi</p>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3><i class="fas fa-download"></i> Mobilga O'rnatish</h3>
+            
+            <div class="step">
+                <div class="step-num">1</div>
+                <div>Ilovani oching</div>
+            </div>
+            
+            <div class="step">
+                <div class="step-num">2</div>
+                <div>Brauzer menyusidan "Add to Home Screen" tanlang</div>
+            </div>
+            
+            <div class="step">
+                <div class="step-num">3</div>
+                <div>Telefon uy ekranida UDent ilovasini topasiz</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
